@@ -60,10 +60,9 @@ client = mqtt.Client("receiver_game")  # create new instance
 client.on_message = on_message  # Przerwanie przy dostaniu wiadomosci
 client.connect(broker_address)
 client.loop_start()  # start the loop
-client.subscribe("player1/ready")
-client.subscribe("player2/ready")
-client.subscribe("player1/quit")
-client.subscribe("player2/quit")
+client.subscribe("Ready/Player1")
+client.subscribe("Ready/Player2")
+client.subscribe("Player/Quit")
 client.subscribe("Akcelerometr/Down")
 client.subscribe("AkcelerometrBur/Down")
 
