@@ -75,6 +75,9 @@ client.subscribe("Akcelerometr/Down")
 client.subscribe("AkcelerometrBur/Down")
 
 while True:
+    if ingame and starttime:
+        if abs(starttime - time.time()) > 20:
+            finishgame()
     pass
 
 client.loop_stop()  # stop the loop
