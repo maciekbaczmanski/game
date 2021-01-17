@@ -74,5 +74,8 @@ client.subscribe("player2/quit")
 client.subscribe("Akcelerometr/Down")
 client.subscribe("AkcelerometrBur/Down")
 
+while True:
+    pass
+
 client.loop_stop()  # stop the loop
 client.disconnect(broker_address)
