@@ -50,13 +50,11 @@ def on_message(client, userdata, message):
     elif message.topic == "Akcelerometr/Down" and ingame:
         p1.addpoint()
         client.publish("player1/points", p1.points)
-        if abs(starttime - time.time()) > 20:
-            finishgame()
+
     elif message.topic == "AkcelerometrBur/Down" and ingame:
         p2.addpoint()
         client.publish("player2/points", p2.points)
-        if abs(starttime - time.time()) > 20:
-            finishgame()
+
 
 
 ########################################
