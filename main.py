@@ -11,18 +11,17 @@ ingame = False
 def startgame():
     global ingame, client, starttime
     ingame = True
-    client.publish("game/ready", 0)
+    client.publish("Master/Ready", 0)
     starttime = time.time()
 
 
 def finishgame():
     global p1, p2, ingame
     if p1.points > p2.points:
-        client.publish("game/finished", 1)
+        client.publish("Win/Player1", 1)
     elif p1.points < p2.points:
-        client.publish("game/finished", 2)
-    elif p1.points == p2.points:
-        client.publish("game/finished", 0)
+        client.publish("Win/Player1", 2)
+
     p1.clear()
     p2.clear()
     ingame = False
@@ -30,30 +29,26 @@ def finishgame():
 
 def on_message(client, userdata, message):
     global p1, p2, ingame, starttime
-    if message.topic == "player1/ready":
+    if message.topic == "Ready/Player1":
         p1.ready()
         if p2.ifready:
             startgame()
-    elif message.topic == "player2/ready":
+    elif message.topic == "Ready/Player2":
         p2.ready()
         if p1.ifready:
             startgame()
-    elif message.topic == "player1/quit":
+    elif message.topic == "Player/Quit":
         p1.quit()
-        if ingame:
-            finishgame()
-    elif message.topic == "player2/quit":
         p2.quit()
         if ingame:
             finishgame()
 
-    elif message.topic == "Akcelerometr/Down" and ingame:
+    elif message.topic == "Akcelerometr/Down" and ingame and abs(starttime - time.time()) > 5:
         p1.addpoint()
-        client.publish("player1/points", p1.points)
 
-    elif message.topic == "AkcelerometrBur/Down" and ingame:
+
+    elif message.topic == "AkcelerometrBur/Down" and ingame and abs(starttime - time.time()) > 5:
         p2.addpoint()
-        client.publish("player2/points", p2.points)
 
 
 
@@ -74,7 +69,7 @@ client.subscribe("AkcelerometrBur/Down")
 
 while True:
     if ingame and starttime:
-        if abs(starttime - time.time()) > 20:
+        if abs(starttime - time.time()) > 25:
             finishgame()
     pass
 
